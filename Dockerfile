@@ -19,19 +19,11 @@ ARG ETHERPAD_PLUGINS=
 # this can be done with build args (and is mandatory to build ARM version)
 ENV NODE_ENV=development
 
-# Follow the principle of least privilege: run as unprivileged user.
-#
-# Running as non-root enables running this image in platforms like OpenShift
-# that do not allow images running as root.
-RUN useradd --uid 5001 --create-home etherpad
-
-RUN mkdir /opt/etherpad-lite && chown etherpad:etherpad /opt/etherpad-lite
-
-USER etherpad:etherpad
+RUN mkdir /opt/etherpad-lite
 
 WORKDIR /opt/etherpad-lite
 
-COPY --chown=etherpad:etherpad ./ ./
+COPY ./ ./
 
 # install node dependencies for Etherpad
 RUN bin/installDeps.sh && \
@@ -44,7 +36,7 @@ RUN bin/installDeps.sh && \
 RUN for PLUGIN_NAME in ${ETHERPAD_PLUGINS}; do npm install "${PLUGIN_NAME}"; done
 
 # Copy the configuration file.
-COPY --chown=etherpad:etherpad ./settings.json.docker /opt/etherpad-lite/settings.json
+COPY ./settings.json.docker /opt/etherpad-lite/settings.json
 
 EXPOSE 9001
 CMD ["node", "node_modules/ep_etherpad-lite/node/server.js"]

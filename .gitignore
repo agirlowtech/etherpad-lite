@@ -19,3 +19,7 @@ npm-debug.log
 bin/etherpad-1.deb
 credentials.json
 out/
+
+.env
+.env.covid-entraide.fr
+DOCKER_COMPOSE.md
