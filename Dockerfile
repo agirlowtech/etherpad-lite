@@ -38,6 +38,9 @@ RUN bin/installDeps.sh && \
 # able to split at spaces.
 RUN for PLUGIN_NAME in ${ETHERPAD_PLUGINS}; do npm install "${PLUGIN_NAME}"; done
 
+# Replaces MyPads favicon
+COPY ./src/static/favicon.ico /opt/etherpad-lite/node_modules/ep_mypads/static/img/mypads_fav.ico
+
 # Copy the configuration file.
 COPY ./settings.json.docker /opt/etherpad-lite/settings.json
 
