@@ -26,7 +26,7 @@ WORKDIR /opt/etherpad-lite
 COPY ./ ./
 
 # phantomJS deps
-RUN apt udpate && apt install -y bzip2
+RUN apt update && apt install -y bzip2
 
 # install node dependencies for Etherpad
 RUN bin/installDeps.sh && \
