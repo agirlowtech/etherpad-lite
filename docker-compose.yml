@@ -39,7 +39,7 @@ services:
     build: 
       context: . 
       args: 
-        ETHERPAD_PLUGINS: "ep_mypads ep_author_neat"
+        ETHERPAD_PLUGINS: "ep_tables3 ep_sticky_attributes ep_stats ep_special_characters ep_set_title_on_pad ep_print ep_pad_activity_nofication_in_title ep_mypads ep_message_all ep_markdown ep_headings2 ep_embedmedia ep_desktop_notifications ep_copy_paste_images ep_page_view ep_horizontal_line ep_comments_page ep_colors ep_chatdate ep_authorship_toggle ep_author_neat ep_align"
         NODE_ENV: "production"
     image: etherpad:custom
     container_name: etherpad
