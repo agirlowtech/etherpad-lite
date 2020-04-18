@@ -1,0 +1,90 @@
+version: '3.7'
+
+services:
+  nginx-proxy:
+    image: jwilder/nginx-proxy
+    container_name: nginx-proxy
+    restart: unless-stopped
+    network_mode: "host"
+    ports:
+      - "0.0.0.0:80:80"
+      - "0.0.0.0:443:443"
+    volumes:
+      - /var/run/docker.sock:/tmp/docker.sock:ro
+      - /etc/nginx/dhparam:/etc/nginx/dhparam
+      - /etc/nginx/certs:/etc/nginx/certs:ro
+      - /etc/nginx/conf.d:/etc/nginx/conf.d
+      - /etc/nginx/vhost.d:/etc/nginx/vhost.d
+      - /etc/nginx/html:/usr/share/nginx/html
+
+  nginx-proxy-companion:
+    image: jrcs/letsencrypt-nginx-proxy-companion
+    container_name: nginx-proxy-companion
+    restart: unless-stopped
+    depends_on:
+      - nginx-proxy
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /etc/nginx/certs:/etc/nginx/certs:rw
+      - /etc/nginx/dhparam:/etc/nginx/dhparam
+      - /etc/nginx/conf.d:/etc/nginx/conf.d
+      - /etc/nginx/vhost.d:/etc/nginx/vhost.d
+      - /etc/nginx/html:/usr/share/nginx/html
+    environment:
+      - NGINX_PROXY_CONTAINER=nginx-proxy
+      - DEFAULT_EMAIL=${EMAIL}
+      
+  etherpad:
+    # Dockerfile based on etherpad/etherpad:1.8.0
+    build: 
+      context: . 
+      args: 
+        ETHERPAD_PLUGINS: "ep_tables3 ep_sticky_attributes ep_stats ep_special_characters ep_set_title_on_pad ep_print ep_pad_activity_nofication_in_title ep_mypads ep_message_all ep_markdown ep_headings2 ep_embedmedia ep_desktop_notifications ep_copy_paste_images ep_page_view ep_horizontal_line ep_comments_page ep_colors ep_chatdate ep_authorship_toggle ep_author_neat ep_align"
+        NODE_ENV: "production"
+    image: etherpad:custom
+    container_name: etherpad
+    restart: unless-stopped
+    ports:
+      - "9001"
+    environment:
+      - TITLE
+      - FAVICON
+      - SKIN_NAME=colibris # either no-skin, colibris or an existing directory under src/static/skins.
+      - PORT=9001
+      - SHOW_SETTINGS_IN_ADMIN_PAGE=show # hide/show the settings.json in admin page
+      - DB_TYPE=postgres
+      - DB_HOST=db
+      - DB_PORT=5432
+      - DB_NAME
+      - DB_USER
+      - DB_PASS
+      - ADMIN_PASSWORD
+      - USER_PASSWORD
+      - TRUST_PROXY=true
+      - LOGLEVEL=INFO # valid values are DEBUG, INFO, WARN and ERROR
+      - NODE_ENV=production
+      - LETSENCRYPT_HOST=${DOMAIN}
+      - LETSENCRYPT_EMAIL=${EMAIL}
+      - VIRTUAL_HOST=${DOMAIN}
+    volumes:
+      - ${CONFIG_DIR}:/opt/etherpad-lite
+    depends_on:
+      - db
+    networks:
+      - app
+
+  db:
+    image: "postgres:12.2-alpine"
+    container_name: db
+    restart: unless-stopped
+    environment:
+      - POSTGRES_DB=${DB_NAME}
+      - POSTGRES_USER=${DB_USER}
+      - POSTGRES_PASSWORD=${DB_PASS}
+    volumes:
+      - ${DB_DATA_DIR}:/var/lib/postgresql/data
+    networks:
+      - app
+      
+networks:
+  app:
