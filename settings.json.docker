@@ -152,7 +152,7 @@
   /*
    * The default text of a pad
    */
-  "defaultPadText" : "Bienvenue sur un document collaboratif (aussi appelé \"pad\") hébergé par le réseau COVID-ENTRAIDE France ! (https://covid-entraide.fr)\n\nCe document texte est automatiquement synchronisé lorsque tu tappes au clavier, de telle sorte que toustes celles et ceux consultant cette page voient le même texte et peuvent travailler en même temps sur celui-ci.\n\n Pour toutes questions à propos de l'outil, tu peux écrire à : blabla@covid-entraide.fr",
+  "defaultPadText" : "${DEFAULT_PAD_TEXT:Welcome to Etherpad!\n\nThis pad text is synchronized as you type, so that everyone viewing this page sees the same text. This allows you to collaborate seamlessly on documents!\n\nGet involved with Etherpad at http:\/\/etherpad.org\n}",
 
   /*
    * Default Pad behavior.
@@ -170,7 +170,7 @@
     "rtl":              false,
     "alwaysShowChat":   false,
     "chatAndUsers":     false,
-    "lang":             "fr-fr"
+    "lang":             "en-gb"
   },
 
   /*
@@ -450,7 +450,7 @@
 
       /*
       , { "type": "file"
-      , "filename": "etherpad.log"
+      , "filename": "your-log-file-here.log"
       , "maxLogSize": 1024
       , "backups": 3 // how many log files there're gonna be at max
       //, "category": "test" // only log a specific category

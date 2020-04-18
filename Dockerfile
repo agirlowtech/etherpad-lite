@@ -25,9 +25,6 @@ WORKDIR /opt/etherpad-lite
 
 COPY ./ ./
 
-# phantomJS deps
-RUN apt update && apt install -y bzip2
-
 # install node dependencies for Etherpad
 RUN bin/installDeps.sh && \
 	rm -rf ~/.npm/_cacache
@@ -37,9 +34,6 @@ RUN bin/installDeps.sh && \
 # Bash trick: in the for loop ${ETHERPAD_PLUGINS} is NOT quoted, in order to be
 # able to split at spaces.
 RUN for PLUGIN_NAME in ${ETHERPAD_PLUGINS}; do npm install "${PLUGIN_NAME}"; done
-
-# Replaces MyPads favicon
-COPY ./src/static/favicon.ico /opt/etherpad-lite/node_modules/ep_mypads/static/img/mypads_fav.ico
 
 # Copy the configuration file.
 COPY ./settings.json.docker /opt/etherpad-lite/settings.json
