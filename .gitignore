@@ -21,5 +21,5 @@ credentials.json
 out/
 
 .env
-.env.covid-entraide.fr
+.env.*
 DOCKER_COMPOSE.md
