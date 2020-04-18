@@ -67,9 +67,7 @@ services:
       - LETSENCRYPT_EMAIL=${EMAIL}
       - VIRTUAL_HOST=${DOMAIN}
     volumes:
-      - ${CONFIG_DIR}/settings.json:/opt/etherpad-lite/settings.json
-      - ${CONFIG_DIR}/SESSIONKEY.txt:/opt/etherpad-lite/SESSIONKEY.txt
-      - ${CONFIG_DIR}/APIKEY.txt:/opt/etherpad-lite/APIKEY.txt
+      - ${CONFIG_DIR}:/opt/etherpad-lite
     depends_on:
       - db
     networks:
