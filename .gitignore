@@ -20,6 +20,5 @@ bin/etherpad-1.deb
 credentials.json
 out/
 
-.env
 .env.*
 DOCKER_COMPOSE.md
