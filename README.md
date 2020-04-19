@@ -33,8 +33,8 @@ vim .env
 source .env
 
 // edit your APIKEY and SESSIONKEY
-echo "${APIKEY}" > APIKEY.txt
-echo "${SESSIONKEY}" > SESSIONKEY.txt
+echo "${APIKEY}" > ${CONFIG_DIR}/APIKEY.txt
+echo "${SESSIONKEY}" > ${CONFIG_DIR}/SESSIONKEY.txt
 
 ```
 
